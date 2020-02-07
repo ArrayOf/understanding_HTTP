@@ -16,12 +16,12 @@ uses
   Vcl.StdCtrls,
   Vcl.Imaging.pngimage,
   Vcl.ExtCtrls,
+  Vcl.Samples.Spin,
   IdBaseComponent,
   IdComponent,
   IdCustomTCPServer,
   IdTCPServer,
-  IdContext,
-  Vcl.Samples.Spin;
+  IdContext;
 
 type
 
@@ -214,7 +214,8 @@ end;
 
 procedure TForm1.Log(const ALine: string);
 {
-  Geração de um log simples dos acontecimentos relevantes
+  Geração de um log simples dos acontecimentos relevantes.
+  É adicionado o ID da thread que invocou o método.
 }
 var
   sLog: string;

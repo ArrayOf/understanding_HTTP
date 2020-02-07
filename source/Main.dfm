@@ -1997,7 +1997,7 @@ object Form1: TForm1
     ExplicitHeight = 597
     object Splitter1: TSplitter
       Left = 0
-      Top = 324
+      Top = 356
       Width = 960
       Height = 3
       Cursor = crVSplit
@@ -2012,12 +2012,11 @@ object Form1: TForm1
       Left = 3
       Top = 3
       Width = 954
-      Height = 318
+      Height = 350
       Align = alTop
       Caption = 'Panel3'
       ShowCaption = False
       TabOrder = 0
-      ExplicitWidth = 1091
       object Panel5: TPanel
         Left = 1
         Top = 1
@@ -2039,7 +2038,7 @@ object Form1: TForm1
         Left = 1
         Top = 42
         Width = 952
-        Height = 275
+        Height = 307
         Align = alClient
         Color = 16384
         Font.Charset = ANSI_CHARSET
@@ -2059,17 +2058,15 @@ object Form1: TForm1
     object Panel4: TPanel
       AlignWithMargins = True
       Left = 3
-      Top = 330
+      Top = 362
       Width = 954
-      Height = 315
+      Height = 283
       Align = alClient
       Caption = 'Panel4'
       ShowCaption = False
       TabOrder = 1
-      ExplicitLeft = 541
-      ExplicitTop = 3
-      ExplicitWidth = 553
-      ExplicitHeight = 591
+      ExplicitTop = 330
+      ExplicitHeight = 315
       object Panel6: TPanel
         Left = 1
         Top = 1
@@ -2092,7 +2089,7 @@ object Form1: TForm1
         Left = 1
         Top = 42
         Width = 952
-        Height = 231
+        Height = 199
         Align = alClient
         Color = clBlack
         Font.Charset = ANSI_CHARSET
@@ -2110,7 +2107,7 @@ object Form1: TForm1
       end
       object Panel7: TPanel
         Left = 1
-        Top = 273
+        Top = 241
         Width = 952
         Height = 41
         Align = alBottom
