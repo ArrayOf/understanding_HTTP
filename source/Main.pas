@@ -36,6 +36,7 @@ type
   private
     { Private declarations }
     FEvent: TEvent;
+    procedure Log(const ALine: string);
   public
     { Public declarations }
   end;
@@ -53,7 +54,7 @@ uses
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   Self.IdTCPServer1.Active := True;
-  Self.Button1.Enabled := False;
+  Self.Button1.Enabled     := False;
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -76,22 +77,24 @@ end;
 
 procedure TForm1.IdTCPServer1Connect(AContext: TIdContext);
 begin
-  Self.Memo3.Lines.Insert(0, 'CLIENTE CONECTADO');
+  Self.Log('CONECTOU');
 end;
 
 procedure TForm1.IdTCPServer1Disconnect(AContext: TIdContext);
 begin
-Self.Memo3.Lines.Insert(0, 'CLIENTE SE DESCONECTOU');
+  Self.Log('DESCONECTOU');
 end;
 
 procedure TForm1.IdTCPServer1Execute(AContext: TIdContext);
 var
-  oHandler: TIdIOHandler;
+  oHandler : TIdIOHandler;
   slPayload: TStringList;
-  sLine: string;
+  sLine    : string;
 begin
+  Self.Log('EXECUTANDO');
+
   slPayload := TStringList.Create;
-  oHandler := AContext.Connection.IOHandler;
+  oHandler  := AContext.Connection.IOHandler;
 
   try
     repeat
@@ -99,7 +102,7 @@ begin
       slPayload.Add(sLine);
     until (sLine = EmptyStr);
 
-    Self.Memo1.Text := slPayload.Text;
+    Self.Memo1.Text   := slPayload.Text;
     Self.Panel6.Color := clRed;
 
     Self.FEvent.WaitFor(INFINITE);
@@ -113,6 +116,16 @@ begin
     slPayload.Free;
     oHandler.Close;
   end;
+end;
+
+procedure TForm1.Log(const ALine: string);
+var
+  sLog: string;
+  iTID: Cardinal;
+begin
+  iTID := GetCurrentThreadId;
+  sLog := Format('%d - %s', [iTID, ALine]);
+  Self.Memo3.Lines.Insert(0, sLog);
 end;
 
 end.
