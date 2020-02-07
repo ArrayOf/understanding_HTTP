@@ -20,7 +20,8 @@ uses
   IdComponent,
   IdCustomTCPServer,
   IdTCPServer,
-  IdContext;
+  IdContext,
+  Vcl.Samples.Spin;
 
 type
 
@@ -32,14 +33,16 @@ type
     Panel4: TPanel;
     Panel5: TPanel;
     Panel6: TPanel;
-    Memo1: TMemo;
-    Memo2: TMemo;
+    MemoRequisicao: TMemo;
+    MemoResposta: TMemo;
     Image1: TImage;
     Button1: TButton;
     IdTCPServer1: TIdTCPServer;
     Panel7: TPanel;
     Button2: TButton;
-    Memo3: TMemo;
+    MemoLog: TMemo;
+    SpinEdit1: TSpinEdit;
+    Label1: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure IdTCPServer1Execute(AContext: TIdContext);
     procedure FormCreate(Sender: TObject);
@@ -96,6 +99,10 @@ begin
 
   Self.FEvent    := TEvent.Create(nil, True, False, 'sinalizador');
   Self.FCritical := TCriticalSection.Create;
+
+  Self.MemoLog.Clear;
+  Self.MemoRequisicao.Clear;
+  Self.MemoResposta.Clear;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -135,11 +142,15 @@ procedure TForm1.IdTCPServer1Execute(AContext: TIdContext);
   relacionados à thread são necessários.
 
   É um código didático por isso abriu-se mão de alguns desses cuidados.
+
+  * Assumimos que o conteúdo trafegado é sempre texto e em UTF-8
 }
 var
-  oHandler : TIdIOHandler;
-  slPayload: TStringList;
-  sLine    : string;
+  oHandler      : TIdIOHandler;
+  sLine         : string;
+  iContentLength: Cardinal;
+  iPos          : Integer;
+  sContent      : string;
 begin
   // Entrando em uma seção crítica para tratar cada conexão a uma só vez
   Self.FCritical.Enter;
@@ -150,9 +161,9 @@ begin
   Self.Panel6.Color   := clRed;
 
   // Inicializando
-  slPayload := TStringList.Create;
-  oHandler  := AContext.Connection.IOHandler;
-  Self.Memo1.Clear;
+  oHandler       := AContext.Connection.IOHandler;
+  iContentLength := 0;
+  Self.MemoRequisicao.Clear;
 
   try
     // Recuperando o cabeçalho da requisição HTTP
@@ -161,17 +172,29 @@ begin
       sLine := oHandler.ReadLn();
 
       // Alimenta o Memo referente à requisição
-      Self.Memo1.Lines.Add(sLine);
+      Self.MemoRequisicao.Lines.Add(sLine);
 
-      // Alimenta a StringList para consulta posterior
-      slPayload.Add(sLine);
+      // Recuperando o tamanho do conteúdo da mensagem
+      sLine := LowerCase(sLine);
+      iPos  := Pos('content-length', sLine);
+      if iPos > 0 then
+      begin
+        iContentLength := StrToInt(Trim(Copy(sLine, Pos(':', sLine) + 1, MaxInt)));
+      end;
     until (sLine = EmptyStr);
+
+    // Recupera o conteúdo - caso haja
+    if iContentLength > 0 then
+    begin
+      sContent := oHandler.ReadString(iContentLength, IndyTextEncoding_UTF8);
+      Self.MemoRequisicao.Lines.Add(sContent);
+    end;
 
     // Suspende a thread aguardando o envio da resposta
     Self.FEvent.WaitFor(INFINITE);
 
     // Escreve, linha a linha, o conteúdo da resposta
-    for sLine in Self.Memo2.Lines do
+    for sLine in Self.MemoResposta.Lines do
     begin
       oHandler.WriteLn(sLine, IndyTextEncoding_UTF8);
     end;
@@ -183,7 +206,6 @@ begin
     // Sinalização visual de que encerrou o processamento
     Self.Panel5.Caption := 'REQUISIÇÃO';
     Self.Panel6.Color   := clBtnFace;
-    slPayload.Free;
 
     // Libera a seção crítica permitindo o tratamento da próxima requisição
     Self.FCritical.Release;
@@ -200,7 +222,7 @@ var
 begin
   iTID := GetCurrentThreadId;
   sLog := Format('%d - %s', [iTID, ALine]);
-  Self.Memo3.Lines.Insert(0, sLog);
+  Self.MemoLog.Lines.Insert(0, sLog);
 end;
 
 end.

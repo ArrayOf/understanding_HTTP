@@ -5,10 +5,10 @@ object Form1: TForm1
   ClientHeight = 761
   ClientWidth = 960
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
@@ -1946,6 +1946,14 @@ object Form1: TForm1
       Stretch = True
       ExplicitLeft = 920
     end
+    object Label1: TLabel
+      Left = 42
+      Top = 45
+      Width = 64
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Porta TCP/IP:'
+    end
     object Button1: TButton
       Left = 16
       Top = 11
@@ -1955,7 +1963,7 @@ object Form1: TForm1
       TabOrder = 0
       OnClick = Button1Click
     end
-    object Memo3: TMemo
+    object MemoLog: TMemo
       Left = 215
       Top = 13
       Width = 410
@@ -1963,6 +1971,16 @@ object Form1: TForm1
       Lines.Strings = (
         'Memo3')
       TabOrder = 1
+    end
+    object SpinEdit1: TSpinEdit
+      Left = 112
+      Top = 42
+      Width = 97
+      Height = 22
+      MaxValue = 0
+      MinValue = 0
+      TabOrder = 2
+      Value = 8080
     end
   end
   object Panel2: TPanel
@@ -2008,16 +2026,16 @@ object Form1: TForm1
         Align = alTop
         BevelInner = bvLowered
         Caption = 'REQUISI'#199#195'O'
-        Font.Charset = DEFAULT_CHARSET
+        Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -27
-        Font.Name = 'Tahoma'
+        Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 0
         ExplicitWidth = 527
       end
-      object Memo1: TMemo
+      object MemoRequisicao: TMemo
         Left = 1
         Top = 42
         Width = 952
@@ -2060,17 +2078,17 @@ object Form1: TForm1
         Align = alTop
         BevelInner = bvLowered
         Caption = 'RESPOSTA'
-        Font.Charset = DEFAULT_CHARSET
+        Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -27
-        Font.Name = 'Tahoma'
+        Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
         ExplicitWidth = 551
       end
-      object Memo2: TMemo
+      object MemoResposta: TMemo
         Left = 1
         Top = 42
         Width = 952
