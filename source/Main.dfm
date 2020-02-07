@@ -26,7 +26,6 @@ object Form1: TForm1
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 1097
     DesignSize = (
       960
       113)
@@ -1993,8 +1992,6 @@ object Form1: TForm1
     Caption = 'Panel2'
     ShowCaption = False
     TabOrder = 1
-    ExplicitWidth = 1097
-    ExplicitHeight = 597
     object Splitter1: TSplitter
       Left = 0
       Top = 356
@@ -2032,7 +2029,6 @@ object Form1: TForm1
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 527
       end
       object MemoRequisicao: TMemo
         Left = 1
@@ -2051,8 +2047,6 @@ object Form1: TForm1
         ParentFont = False
         TabOrder = 1
         WordWrap = False
-        ExplicitWidth = 527
-        ExplicitHeight = 548
       end
     end
     object Panel4: TPanel
@@ -2065,8 +2059,6 @@ object Form1: TForm1
       Caption = 'Panel4'
       ShowCaption = False
       TabOrder = 1
-      ExplicitTop = 330
-      ExplicitHeight = 315
       object Panel6: TPanel
         Left = 1
         Top = 1
@@ -2083,7 +2075,6 @@ object Form1: TForm1
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 551
       end
       object MemoResposta: TMemo
         Left = 1
@@ -2102,8 +2093,6 @@ object Form1: TForm1
         ParentFont = False
         TabOrder = 1
         WordWrap = False
-        ExplicitWidth = 551
-        ExplicitHeight = 507
       end
       object Panel7: TPanel
         Left = 1
@@ -2115,8 +2104,6 @@ object Form1: TForm1
         Caption = 'Panel7'
         ShowCaption = False
         TabOrder = 2
-        ExplicitTop = 549
-        ExplicitWidth = 551
         object Button2: TButton
           Left = 10
           Top = 6

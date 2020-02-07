@@ -76,6 +76,7 @@ procedure TForm1.Button1Click(Sender: TObject);
   especificada
 }
 begin
+  Self.IdTCPServer1.DefaultPort := Self.SpinEdit1.Value;
   Self.IdTCPServer1.Active := True;
   Self.Button1.Enabled     := False;
 end;
