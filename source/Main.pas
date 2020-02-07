@@ -3,13 +3,27 @@ unit Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, IdBaseComponent, IdComponent,
-  IdCustomTCPServer, IdTCPServer, Vcl.StdCtrls, Vcl.Imaging.pngimage,
-  Vcl.ExtCtrls, IdContext, System.SyncObjs;
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  System.SyncObjs,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  Vcl.Imaging.pngimage,
+  Vcl.ExtCtrls,
+  IdBaseComponent,
+  IdComponent,
+  IdCustomTCPServer,
+  IdTCPServer,
+  IdContext;
 
 type
+
   TForm1 = class(TForm)
     Panel1: TPanel;
     Panel2: TPanel;
@@ -35,7 +49,8 @@ type
     procedure IdTCPServer1Disconnect(AContext: TIdContext);
   private
     { Private declarations }
-    FEvent: TEvent;
+    FEvent   : TEvent;
+    FCritical: TCriticalSection;
     procedure Log(const ALine: string);
   public
     { Public declarations }
@@ -47,78 +62,138 @@ var
 implementation
 
 uses
-  IdIOHandler, IdGlobal;
+  IdIOHandler,
+  IdGlobal;
 
 {$R *.dfm}
 
 procedure TForm1.Button1Click(Sender: TObject);
+{
+  Inicialização do servidor TCP/IP propriamente dito utilizando a porta
+  especificada
+}
 begin
   Self.IdTCPServer1.Active := True;
   Self.Button1.Enabled     := False;
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
+{
+  Aqui liberamos a aplicação para responder ao cliente com o conteúdo do
+  Memo de resposta
+}
 begin
   Self.FEvent.SetEvent;
   Self.FEvent.ResetEvent;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
+{
+  Criação dos objetos quando da inicialização da aplicação
+}
 begin
   ReportMemoryLeaksOnShutdown := True;
 
-  Self.FEvent := TEvent.Create(nil, True, False, 'sinalizado');
+  Self.FEvent    := TEvent.Create(nil, True, False, 'sinalizador');
+  Self.FCritical := TCriticalSection.Create;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
+{
+  Liberação dos objetos quando do encerramento da aplicação
+}
 begin
   Self.FEvent.Free;
+  Self.FCritical.Free;
 end;
 
 procedure TForm1.IdTCPServer1Connect(AContext: TIdContext);
+{
+  O evento `Connect` ocorre quando da conexão de um cliente ao nosso servidor
+}
 begin
   Self.Log('CONECTOU');
 end;
 
 procedure TForm1.IdTCPServer1Disconnect(AContext: TIdContext);
+{
+  O evento `Disconnect` ocorrer quando da desconexão seja por parte do cliente,
+  seja por parte do servidor
+}
 begin
   Self.Log('DESCONECTOU');
 end;
 
 procedure TForm1.IdTCPServer1Execute(AContext: TIdContext);
+{
+  O evento `Execute` da classe `TidTCPServer` é acionado logo após a conexão.
+
+  IMPORTANTE:
+  ==========
+
+  Aqui estamos em um contexto de thread portanto todos os cuidados
+  relacionados à thread são necessários.
+
+  É um código didático por isso abriu-se mão de alguns desses cuidados.
+}
 var
   oHandler : TIdIOHandler;
   slPayload: TStringList;
   sLine    : string;
 begin
-  Self.Log('EXECUTANDO');
+  // Entrando em uma seção crítica para tratar cada conexão a uma só vez
+  Self.FCritical.Enter;
 
+  // Sinalização visual de qual requisição está sendo estudada
+  Self.Log('EXECUTANDO');
+  Self.Panel5.Caption := Format('THREAD #%d', [GetCurrentThreadId]);
+  Self.Panel6.Color   := clRed;
+
+  // Inicializando
   slPayload := TStringList.Create;
   oHandler  := AContext.Connection.IOHandler;
+  Self.Memo1.Clear;
 
   try
+    // Recuperando o cabeçalho da requisição HTTP
     repeat
+      // O `ReadLn` recupera o conteúdo até encontrar uma quebra de linha
       sLine := oHandler.ReadLn();
+
+      // Alimenta o Memo referente à requisição
+      Self.Memo1.Lines.Add(sLine);
+
+      // Alimenta a StringList para consulta posterior
       slPayload.Add(sLine);
     until (sLine = EmptyStr);
 
-    Self.Memo1.Text   := slPayload.Text;
-    Self.Panel6.Color := clRed;
-
+    // Suspende a thread aguardando o envio da resposta
     Self.FEvent.WaitFor(INFINITE);
 
+    // Escreve, linha a linha, o conteúdo da resposta
     for sLine in Self.Memo2.Lines do
     begin
       oHandler.WriteLn(sLine, IndyTextEncoding_UTF8);
     end;
+
   finally
-    Self.Panel6.Color := clBtnFace;
-    slPayload.Free;
+    // Encerra a conexão TCP/IP
     oHandler.Close;
+
+    // Sinalização visual de que encerrou o processamento
+    Self.Panel5.Caption := 'REQUISIÇÃO';
+    Self.Panel6.Color   := clBtnFace;
+    slPayload.Free;
+
+    // Libera a seção crítica permitindo o tratamento da próxima requisição
+    Self.FCritical.Release;
   end;
 end;
 
 procedure TForm1.Log(const ALine: string);
+{
+  Geração de um log simples dos acontecimentos relevantes
+}
 var
   sLog: string;
   iTID: Cardinal;

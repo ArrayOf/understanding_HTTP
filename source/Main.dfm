@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'CodeRage 2020 Brazil | Servidor HTTP'
-  ClientHeight = 710
-  ClientWidth = 1097
+  ClientHeight = 761
+  ClientWidth = 960
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,18 +19,19 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1097
+    Width = 960
     Height = 113
     Align = alTop
     BevelInner = bvLowered
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 0
+    ExplicitWidth = 1097
     DesignSize = (
-      1097
+      960
       113)
     object Image1: TImage
-      Left = 920
+      Left = 783
       Top = 11
       Width = 166
       Height = 94
@@ -1943,6 +1944,7 @@ object Form1: TForm1
         CBF5342F994C667A747434EDF63801A805FF0F39431029E05F4BBA0000000049
         454E44AE426082}
       Stretch = True
+      ExplicitLeft = 920
     end
     object Button1: TButton
       Left = 16
@@ -1966,37 +1968,42 @@ object Form1: TForm1
   object Panel2: TPanel
     Left = 0
     Top = 113
-    Width = 1097
-    Height = 597
+    Width = 960
+    Height = 648
     Align = alClient
     BevelOuter = bvNone
     Caption = 'Panel2'
     ShowCaption = False
     TabOrder = 1
+    ExplicitWidth = 1097
+    ExplicitHeight = 597
     object Splitter1: TSplitter
-      Left = 535
-      Top = 0
-      Height = 597
+      Left = 0
+      Top = 324
+      Width = 960
+      Height = 3
+      Cursor = crVSplit
+      Align = alTop
       Color = clRed
       ParentColor = False
-      ExplicitLeft = 776
-      ExplicitTop = 336
-      ExplicitHeight = 100
+      ExplicitLeft = -11
+      ExplicitTop = 319
     end
     object Panel3: TPanel
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 529
-      Height = 591
-      Align = alLeft
+      Width = 954
+      Height = 318
+      Align = alTop
       Caption = 'Panel3'
       ShowCaption = False
       TabOrder = 0
+      ExplicitWidth = 1091
       object Panel5: TPanel
         Left = 1
         Top = 1
-        Width = 527
+        Width = 952
         Height = 41
         Align = alTop
         BevelInner = bvLowered
@@ -2008,12 +2015,13 @@ object Form1: TForm1
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 0
+        ExplicitWidth = 527
       end
       object Memo1: TMemo
         Left = 1
         Top = 42
-        Width = 527
-        Height = 548
+        Width = 952
+        Height = 275
         Align = alClient
         Color = 16384
         Font.Charset = ANSI_CHARSET
@@ -2026,22 +2034,28 @@ object Form1: TForm1
         ParentFont = False
         TabOrder = 1
         WordWrap = False
+        ExplicitWidth = 527
+        ExplicitHeight = 548
       end
     end
     object Panel4: TPanel
       AlignWithMargins = True
-      Left = 541
-      Top = 3
-      Width = 553
-      Height = 591
+      Left = 3
+      Top = 330
+      Width = 954
+      Height = 315
       Align = alClient
       Caption = 'Panel4'
       ShowCaption = False
       TabOrder = 1
+      ExplicitLeft = 541
+      ExplicitTop = 3
+      ExplicitWidth = 553
+      ExplicitHeight = 591
       object Panel6: TPanel
         Left = 1
         Top = 1
-        Width = 551
+        Width = 952
         Height = 41
         Align = alTop
         BevelInner = bvLowered
@@ -2054,12 +2068,13 @@ object Form1: TForm1
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
+        ExplicitWidth = 551
       end
       object Memo2: TMemo
         Left = 1
         Top = 42
-        Width = 551
-        Height = 507
+        Width = 952
+        Height = 231
         Align = alClient
         Color = clBlack
         Font.Charset = ANSI_CHARSET
@@ -2072,17 +2087,21 @@ object Form1: TForm1
         ParentFont = False
         TabOrder = 1
         WordWrap = False
+        ExplicitWidth = 551
+        ExplicitHeight = 507
       end
       object Panel7: TPanel
         Left = 1
-        Top = 549
-        Width = 551
+        Top = 273
+        Width = 952
         Height = 41
         Align = alBottom
         BevelOuter = bvLowered
         Caption = 'Panel7'
         ShowCaption = False
         TabOrder = 2
+        ExplicitTop = 549
+        ExplicitWidth = 551
         object Button2: TButton
           Left = 10
           Top = 6
