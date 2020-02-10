@@ -77,8 +77,8 @@ procedure TForm1.Button1Click(Sender: TObject);
 }
 begin
   Self.IdTCPServer1.DefaultPort := Self.SpinEdit1.Value;
-  Self.IdTCPServer1.Active := True;
-  Self.Button1.Enabled     := False;
+  Self.IdTCPServer1.Active      := True;
+  Self.Button1.Enabled          := False;
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -111,6 +111,7 @@ procedure TForm1.FormDestroy(Sender: TObject);
   Liberação dos objetos quando do encerramento da aplicação
 }
 begin
+  Self.FEvent.SetEvent;
   Self.FEvent.Free;
   Self.FCritical.Free;
 end;
@@ -170,7 +171,7 @@ begin
     // Recuperando o cabeçalho da requisição HTTP
     repeat
       // O `ReadLn` recupera o conteúdo até encontrar uma quebra de linha
-      sLine := oHandler.ReadLn();
+      sLine := oHandler.ReadLn(#13#10, 10000);
 
       // Alimenta o Memo referente à requisição
       Self.MemoRequisicao.Lines.Add(sLine);
@@ -192,7 +193,10 @@ begin
     end;
 
     // Suspende a thread aguardando o envio da resposta
-    Self.FEvent.WaitFor(INFINITE);
+    if Trim(Self.MemoRequisicao.Text) <> EmptyStr then
+    begin
+      Self.FEvent.WaitFor(INFINITE);
+    end;
 
     // Escreve, linha a linha, o conteúdo da resposta
     for sLine in Self.MemoResposta.Lines do

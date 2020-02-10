@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  Caption = 'CodeRage 2020 Brazil | Servidor HTTP'
+  Caption = 'CodeRage 2020 Brasil | Servidor HTTP'
   ClientHeight = 761
   ClientWidth = 960
   Color = clBtnFace
