@@ -14,9 +14,9 @@ Bem vindo aos exemplos práticos da palestra **Entendendo o HTTP para entender o
 
 
 
-Os slides estão em: [Em breve]
+Os slides estão em: [https://www.slideshare.net/arrayof/entendendo-http-para-entender-o-rest-227569860](https://www.slideshare.net/arrayof/entendendo-http-para-entender-o-rest-227569860)
 
-E o vídeo no nosso canal do Youtube:  [Em breve]
+E o vídeo no nosso canal do Youtube: [https://youtu.be/x0HT3Dg53i4](https://youtu.be/x0HT3Dg53i4)
 
 ![Exemplo de execução](assets/example.gif)
 
